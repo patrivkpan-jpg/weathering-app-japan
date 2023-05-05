@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use App\Helpers\GuzzleHelper;
 
 class PlaceController extends Controller
 {
@@ -13,7 +13,6 @@ class PlaceController extends Controller
 	**/
     public function getPlace(String $sPlace)
     {
-    	$oGuzzle = new Client();
     	$sUrl = 'https://api.foursquare.com/v3/places/search?near=' . $sPlace . '%%2C%%20JP&limit=1';
     	$aHeaders = [
 			'headers' => [
@@ -21,9 +20,7 @@ class PlaceController extends Controller
 		    	'accept'        => 'application/json',
 			]
 		];
-    	$oResponse = $oGuzzle->request('GET', $sUrl, $aHeaders);
 
-		$aDecodeRes = json_decode($oResponse->getBody()->getContents(), true);
-		return $aDecodeRes;
+		return GuzzleHelper::request('GET', $sUrl, $aHeaders);
     }
 }
