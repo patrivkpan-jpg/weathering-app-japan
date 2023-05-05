@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\WeatherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/places', function () {
-	return 'Places API';
-});
+Route::get('/place/{place}', [PlaceController::class, 'getPlace']);
+Route::get('/weather/{lat}/{long}', [WeatherController::class, 'getWeather']);
