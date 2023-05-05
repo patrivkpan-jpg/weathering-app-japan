@@ -13,7 +13,8 @@ class WeatherController extends Controller
 	**/
     public function getWeather(float $sLat, float $sLong)
     {
-    	$sUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' . $sLat . '&lon=' . $sLong . '&appid=dcca5aa68b3b6d3347b4cbbaa2e87fc6';
+    	$sAPIKey = env('OPEN_WEATHER_API_KEY', 'dcca5aa68b3b6d3347b4cbbaa2e87fc6');
+    	$sUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' . $sLat . '&lon=' . $sLong . '&appid=' . $sAPIKey;
 
 		return GuzzleHelper::request('GET', $sUrl);
     }
