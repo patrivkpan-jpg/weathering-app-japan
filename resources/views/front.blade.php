@@ -28,7 +28,7 @@
 <script>
 	$('.select-place-btn').click(function () {
 		$.ajax({
-			url: '/api/places',
+			url: '/api/place/' + $(this).attr('data-place'),
 			success: function(oRes, sStatus) {
 				let oLatLong = oRes['context']['geo_bounds']['circle']['center'];
 				console.log(oRes, sStatus);
