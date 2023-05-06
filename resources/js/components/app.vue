@@ -49,8 +49,11 @@
 					'Sapporo',
 					'Nagoya'
 				],
+				// Selected city weather data
 				aWeatherData : [],
+				// Currently selected city anchor index
 				iActiveIndex : 0,
+				// Checker for button disable to prevent button spamming
 				bBusy : false
 			}
 		},
@@ -58,6 +61,7 @@
 
 			/**
 			 * Get month, date, year from date
+			 * @param {*} sDate 
 			 */
 			getDate: function(sDate)
 			{
@@ -82,9 +86,10 @@
 				+ ' ' 
 				+ sFormattedDate.getFullYear();
 			},
-
+			
 			/**
 			 * Get day of the week from date
+			 * @param {*} sDate 
 			 */
 			getDay: function(sDate)
 			{
@@ -103,6 +108,7 @@
 
 			/**
 			 * Get time from date
+			 * @param {*} sDate 
 			 */
 			getTime: function(sDate)
 			{
@@ -113,6 +119,10 @@
 				+ ((sTime < 12) ? 'AM' : 'PM');
 			},
 
+			/**
+			 * Get icon for different weathers
+			 * @param {*} sCode 
+			 */
 			getWeatherIconLink: function(sCode)
 			{
 				return 'https://openweathermap.org/img/wn/' + sCode + '@2x.png';
@@ -120,6 +130,7 @@
 
 			/**
 			 * Get place data for latitude and longitude
+			 * @param {*} sPlace 
 			 */
 			getPlace: function(sPlace)
 			{
@@ -135,7 +146,9 @@
 			},
 
 			/**
-			 * Get weather data using latitude and longitude
+			 * Get weather data using latitude and longitude retrieved from getPlace
+			 * @param {*} sLat 
+			 * @param {*} sLong 
 			 */
 			getWeather: function(sLat, sLong)
 			{
