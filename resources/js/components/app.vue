@@ -1,6 +1,6 @@
 <template>
 	<div class="select-place-cont">
-		<div v-for='(sPlace, iIndex) in aPlaces' @click='getPlace(sPlace), (iActiveIndex = iIndex)' class='select-place-weather' :class="{ 'selected' : iActiveIndex === iIndex}">
+		<div v-for='(sPlace, iIndex) in aPlaces' @click='getPlace(sPlace), (iActiveIndex = iIndex)' class='select-place-weather' :class="[{'selected' : iActiveIndex === iIndex}, {'select-place-weather-disabled' : bBusy === true}]">
 			<span>{{ sPlace }}</span>
 		</div>
 	</div>
@@ -50,7 +50,8 @@
 					'Nagoya'
 				],
 				aWeatherData : [],
-				iActiveIndex : -1
+				iActiveIndex : -1,
+				bBusy : false
 			}
 		},
 		methods: {
@@ -96,6 +97,7 @@
 			 */
 			getPlace: function(sPlace)
 			{
+				this.bBusy = true;
 				let self = this;
 				$.ajax({
 					url: '/api/place/' + sPlace,
@@ -118,6 +120,7 @@
 					success: function(oRes, sStatus) {
 						self.aWeatherData = oRes.list;
 						console.log(self.aWeatherData)
+						self.bBusy = false;
 					}
 				})
 			}

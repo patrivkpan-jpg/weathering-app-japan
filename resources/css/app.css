@@ -22,6 +22,10 @@ body {
 	border-bottom: 1px #afa9ac solid;
 }
 
+.select-place-weather-disabled {
+	pointer-events: none;
+}
+
 .select-place-weather:last-child {
 	border-right: 0px #afa9ac solid;
 }
