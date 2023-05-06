@@ -1,26 +1,36 @@
 <template>
-	<h1>Japan Weathering App</h1>
-	<span>Which place do you want to check the weather?</span>
-	<br><br><br>
-	<span v-for='sPlace in aPlaces' @click='getPlace(sPlace)'>{{ sPlace }}</span>
-	<br><br><br>
-	<div>
-		<table>
+	<div class="select-place-cont">
+		<div v-for='(sPlace, iIndex) in aPlaces' @click='getPlace(sPlace), (iActiveIndex = iIndex)' class='select-place-weather' :class="{ 'selected' : iActiveIndex === iIndex}">
+			<span>{{ sPlace }}</span>
+		</div>
+	</div>
+	<div class="weather-details-cont"> 
+		<table class="weather-details-table">
 			<tr v-for='(oWeatherData, iIndex) in aWeatherData'>
 				<td>
-					{{ formatDate(oWeatherData.dt_txt) }}
+					{{ getDate(oWeatherData.dt_txt) }}
+					<br>
+					{{ getDay(oWeatherData.dt_txt) }}
+					<br>
+					{{ getTime(oWeatherData.dt_txt) }}
 				</td>
 				<td>
-					{{ oWeatherData.weather[0].main }}
+					<img :src="getWeatherIconLink(oWeatherData.weather[0].icon)" :alt="oWeatherData.weather[0].description">
 				</td>
 				<td>
-					Temp : {{ oWeatherData.main.temp }}°
+					TEMP
+					<br>
+					{{ oWeatherData.main.temp }}°
 				</td>
 				<td>
-					Feels like : {{ oWeatherData.main.feels_like }}°
+					FEELS LIKE
+					<br>
+					{{ oWeatherData.main.feels_like }}°
 				</td>
 				<td>
-					Wind : {{ oWeatherData.wind.speed }}m/s
+					WIND
+					<br>
+					{{ oWeatherData.wind.speed }}m/s
 				</td>
 			</tr>
 		</table>
@@ -39,38 +49,51 @@
 					'Sapporo',
 					'Nagoya'
 				],
-				aWeatherData : []
+				aWeatherData : [],
+				iActiveIndex : -1
 			}
 		},
 		methods: {
 
-			formatDate: function(sDate)
+			/**
+			 * Get month, date, year from date
+			 */
+			getDate: function(sDate)
 			{
-				const aDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 				const aMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 				let sFormattedDate = new Date(sDate);
-				let sTime = sFormattedDate.getHours();
-				let sConvertedTime = (sTime > 12) ? (sTime - 12) : ((sTime === 0) ? 12 : sTime);
-				return aDays[sFormattedDate.getDay()] + ' ' + aMonths[sFormattedDate.getMonth()] + ' ' +  sFormattedDate.getDate() + ' ' + sFormattedDate.getFullYear() + ' ' + sConvertedTime + ((sTime < 12) ? 'AM' : 'PM');
-			},
-			/**
-			* Get weather data using latitude and longitude
-			*/
-			getWeather: function(sLat, sLong)
-			{
-				let self = this;
-				$.ajax({
-					url: '/api/weather/' + sLat + '/' + sLong,
-					success: function(oRes, sStatus) {
-						self.aWeatherData = oRes.list;
-						console.log(self.aWeatherData)
-					}
-				})
+				return aMonths[sFormattedDate.getMonth()] + ' ' +  sFormattedDate.getDate() + ' ' + sFormattedDate.getFullYear();
 			},
 
 			/**
-			* Get place data for latitude and longitude
-			**/
+			 * Get day of the week from date
+			 */
+			getDay: function(sDate)
+			{
+				const aDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+				let sFormattedDate = new Date(sDate);
+				return aDays[sFormattedDate.getDay()];
+			},
+
+			/**
+			 * Get time from date
+			 */
+			getTime: function(sDate)
+			{
+				let sFormattedDate = new Date(sDate);
+				let sTime = sFormattedDate.getHours();
+				let sConvertedTime = (sTime > 12) ? (sTime - 12) : ((sTime === 0) ? 12 : sTime);
+				return sConvertedTime + ((sTime < 12) ? 'AM' : 'PM');
+			},
+
+			getWeatherIconLink: function(sCode)
+			{
+				return 'https://openweathermap.org/img/wn/' + sCode + '@2x.png';
+			},
+
+			/**
+			 * Get place data for latitude and longitude
+			 */
 			getPlace: function(sPlace)
 			{
 				let self = this;
@@ -83,6 +106,21 @@
 					}
 				})
 			},
+
+			/**
+			 * Get weather data using latitude and longitude
+			 */
+			getWeather: function(sLat, sLong)
+			{
+				let self = this;
+				$.ajax({
+					url: '/api/weather/' + sLat + '/' + sLong,
+					success: function(oRes, sStatus) {
+						self.aWeatherData = oRes.list;
+						console.log(self.aWeatherData)
+					}
+				})
+			}
 		}
 	}
 </script>

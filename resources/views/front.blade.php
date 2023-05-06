@@ -3,6 +3,8 @@
 	@vite('resources/js/app.js')
 </head>
 <html>
-	<div id="app">
-	</div>
+	<body>
+		<div id="app">
+		</div>
+	</body>
 </html>
