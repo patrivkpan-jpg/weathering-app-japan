@@ -50,7 +50,7 @@
 					'Nagoya'
 				],
 				aWeatherData : [],
-				iActiveIndex : -1,
+				iActiveIndex : 0,
 				bBusy : false
 			}
 		},
@@ -124,6 +124,12 @@
 					}
 				})
 			}
+		},
+		mounted() {
+			let self = this;
+			this.$nextTick(function () {
+				self.getPlace('Tokyo');
+			})
 		}
 	}
 </script>
