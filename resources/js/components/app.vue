@@ -1,8 +1,8 @@
 <template>
 	<div class="select-place-cont">
-		<div v-for='(sPlace, iIndex) in aPlaces' @click='getPlace(sPlace), (iActiveIndex = iIndex)' class='select-place-weather' :class="[{'selected' : iActiveIndex === iIndex}, {'select-place-weather-disabled' : bBusy === true}]">
+		<a v-for='(sPlace, iIndex) in aPlaces' @click='getPlace(sPlace), (iActiveIndex = iIndex)' class='select-place-weather' :class="[{'selected' : iActiveIndex === iIndex}, {'select-place-weather-disabled' : bBusy === true}]">
 			<span>{{ sPlace }}</span>
-		</div>
+		</a>
 	</div>
 	<div class="weather-details-cont"> 
 		<table class="weather-details-table">
@@ -61,9 +61,26 @@
 			 */
 			getDate: function(sDate)
 			{
-				const aMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+				const aMonths = [
+					'January', 
+					'February', 
+					'March', 
+					'April', 
+					'May', 
+					'June', 
+					'July', 
+					'August', 
+					'September', 
+					'October', 
+					'November', 
+					'December'
+				];
 				let sFormattedDate = new Date(sDate);
-				return aMonths[sFormattedDate.getMonth()] + ' ' +  sFormattedDate.getDate() + ' ' + sFormattedDate.getFullYear();
+				return aMonths[sFormattedDate.getMonth()] 
+				+ ' ' 
+				+  sFormattedDate.getDate() 
+				+ ' ' 
+				+ sFormattedDate.getFullYear();
 			},
 
 			/**
@@ -71,7 +88,15 @@
 			 */
 			getDay: function(sDate)
 			{
-				const aDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+				const aDays = [
+					'Sunday', 
+					'Monday', 
+					'Tuesday', 
+					'Wednesday', 
+					'Thursday', 
+					'Friday', 
+					'Saturday'
+				];
 				let sFormattedDate = new Date(sDate);
 				return aDays[sFormattedDate.getDay()];
 			},
@@ -84,7 +109,8 @@
 				let sFormattedDate = new Date(sDate);
 				let sTime = sFormattedDate.getHours();
 				let sConvertedTime = (sTime > 12) ? (sTime - 12) : ((sTime === 0) ? 12 : sTime);
-				return sConvertedTime + ((sTime < 12) ? 'AM' : 'PM');
+				return sConvertedTime 
+				+ ((sTime < 12) ? 'AM' : 'PM');
 			},
 
 			getWeatherIconLink: function(sCode)
@@ -103,7 +129,6 @@
 					url: '/api/place/' + sPlace,
 					success: function(oRes, sStatus) {
 						let oLatLong = oRes.context.geo_bounds.circle.center;
-						console.log(oLatLong['latitude'], oLatLong['longitude']);
 						self.getWeather(oLatLong.latitude, oLatLong.longitude);
 					}
 				})
@@ -119,7 +144,6 @@
 					url: '/api/weather/' + sLat + '/' + sLong,
 					success: function(oRes, sStatus) {
 						self.aWeatherData = oRes.list;
-						console.log(self.aWeatherData)
 						self.bBusy = false;
 					}
 				})
